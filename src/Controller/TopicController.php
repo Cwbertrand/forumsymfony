@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Post;
 use App\Entity\Topic;
 use App\Entity\User;
@@ -27,46 +28,60 @@ class TopicController extends AbstractController
     // #[Route('/topic', name: 'topic')]
     // public function index(): Response
     // {
-    //     $topic = $this->em->getRepository(Topic::class)->findBy([], ['topcreateAt' => 'ASC']);
-    //     dd($topic);
     //     return $this->render('topic/index.html.twig', [
-    //         'forms' => $topic,
     //     ]);
     // }
 
     #[Route('/topic/add', name: 'add_topic')]
+    #[Route('/topic/{id}/edit', name: 'edit_topic')]
     public function addTopic(Topic $topic = null, Request $request)
     {
+        if (!$topic) {
+            $topic = new Topic();
+        }
+
         $form = $this->createForm(TopicType::class, $topic);
         $form->handleRequest($request);
 
+        $user = $this->getUser();
         if($form->isSubmitted() && $form->isValid()){
             $topic = $form->getData();
+            $topic->setTopcreateAt(new DateTime());
+            $topic->setUser($user);
+
+
             $this->em->persist($topic);
             $this->em->flush();
 
-            return $this->redirectToRoute('topic');
+            return $this->redirectToRoute('app_home');
         }
+
         return $this->render('topic/addtopic.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
 
     //show detail messages under a topic
     #[Route('/topic/post/{id}', name: 'show_message')]
-    public function showPost(Post $post = null, User $user = null, Topic $topic = null, Request $request)
+    #[Route('/topic/post/{id}/edit', name: 'edit_message')]
+    public function showPost(Post $post = null, Topic $topic = null, Request $request)
     {
+        if (!$post) {
+            $post = new Post();
+        }
 
         //dd($topic);
         $post = new Post();
+        $user = $this->getUser();
         $commentform = $this->createForm(PostType::class, $post);
-        //dd($commentform);
         $commentform->handleRequest($request);
         if($commentform->isSubmitted() && $commentform->isValid()){
             $post = $commentform->getData();
             $post->setCreateAt(new DateTime());
             $post->setTopic($topic);
+            $post->setUser($user);
+            
             $this->em->persist($post);
             $this->em->flush();
         }
@@ -76,26 +91,5 @@ class TopicController extends AbstractController
             'detailpost' => $topic,
         ]);
     }
-
-    // //show detail messages under a topic
-    // #[Route('/post/add', name: 'add_message')]
-    // public function addMessage(Post $post = null, Request $request)
-    // {
-
-    //     $form = $this->createForm(PostType::class, $post);
-    //     $form->handleRequest($request);
-
-    //     if($form->isSubmitted() && $form->isValid()){
-    //         $post = $form->getData();
-    //         $this->em->persist($post);
-    //         $this->em->flush();
-
-    //         return $this->redirectToRoute('add_category');
-    //     }
-
-    //     return $this->render('topic/addmessage.html.twig', [
-    //         'form' => $form->createView()
-    //     ]);
-    // }
 
 }

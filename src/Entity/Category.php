@@ -36,17 +36,18 @@ class Category
         return $this->nomcategory;
     }
 
+    public function setNomcategory(string $nomcategory): self
+    {
+        $this->nomcategory = $nomcategory;
+        
+        return $this;
+    }
+    
     public function __toString()
     {
         return $this->getNomcategory();
     }
-    public function setNomcategory(string $nomcategory): self
-    {
-        $this->nomcategory = $nomcategory;
-
-        return $this;
-    }
-
+    
     /**
      * @return Collection<int, Topic>
      */

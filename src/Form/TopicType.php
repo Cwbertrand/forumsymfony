@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Topic;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,9 +19,6 @@ class TopicType extends AbstractType
             
             ->add('nomtopic', TextType::class, [
                 'label' => 'Topic'
-            ])
-            ->add('topCreateAt', DateTimeType::class, [
-                'widget' => 'single_text',
             ])
             ->add('category')
             ->add('submit', SubmitType::class, [

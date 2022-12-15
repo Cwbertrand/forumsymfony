@@ -11,7 +11,9 @@
                 <div class="ibox-content m-b-sm border-bottom rounded-4">
                     <div class="p-xs d-flex justify-content-between align-items-lg-center">
                         <h2>Topic</h2>
-                        <a href="{{path('add_topic')}}"> Add Topic</a>
+                        {% if is_granted ('ROLE_USER') %}
+                            <a href="{{path('add_topic')}}"> Add Topic</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -35,7 +37,7 @@
                     {% for topic in detailcategory.topics %}
                     <div class="forum-item active">
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-8">
                                 <div class="forum-icon">
                                     <i class="fa fa-shield"></i>
                                 </div>
@@ -63,6 +65,13 @@
                                 </span>
                                 <div>
                                     <small>Created date</small>
+                                </div>
+                            </div>
+                            <div class="col-md-1 forum-info">
+                                <div>
+                                    {% if is_granted ('ROLE_USER') and app.user == topic.user  %}
+                                        <a href="{{path ('edit_topic', {'id': topic.id})}}">Modifier</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

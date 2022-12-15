@@ -22,7 +22,6 @@ class PostType extends AbstractType
                     'value' => null,
                 ]
             ])
-            ->add('user')
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'attr' => ['class' => 'btn btn-success mt-4']
