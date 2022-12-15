@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInRight">
+    
+                <div class="ibox-content m-b-sm border-bottom rounded-4">
+                    <div class="p-xs d-flex justify-content-start align-items-lg-center">
+                        <h2>Message</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="content-item rounded-4" id="comments">
+                <div class="container">   
+                    <div class="row">
+                        <div class="col-sm-8"> 
+                                <h3 class="pull-left">New Comment</h3>
+                                {{ form_start(commentform) }}
+                                {{ form_row(commentform.message) }}
+
+                                <button type="submit" value="submit">Submit</button>
+                                {{ form_end(commentform) }}
+                            
+                            <h3>{{detailpost.posts|length}} Comments</h3>
+                            
+                            <!-- COMMENT - START -->
+                            {% for detailposts in detailpost.posts %}
+                                <div class="media">
+                                    <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">{{detailposts.user}}</h4>
+                                        <p>{{detailposts.message}}</p>
+                                        <ul class="list-unstyled list-inline media-detail pull-left d-flex">
+                                            <li><i class="fa fa-calendar"></i>{{detailposts.createAt|date('d/m/Y')}}</li>
+                                            <li><i class="fa fa-thumbs-up"></i>13</li>
+                                        </ul>
+                                        <ul class="list-unstyled list-inline media-detail pull-right d-flex">
+                                            <li class=""><a href="">Like</a></li>
+                                            <li class=""><a href="">Reply</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                                
+                            
+                            <!-- COMMENT 1 - END -->
+                        
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
